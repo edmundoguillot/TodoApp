@@ -1,3 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using TodoApp.Presentation;
 
-Console.WriteLine("Hello, World!");
+string choice = ConsoleHelper.GetSelection("Enter 'y' or 'n': ", [ "y", "n" ]);
+Console.WriteLine($"\nYou selected: {choice}");
