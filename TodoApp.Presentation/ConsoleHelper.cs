@@ -9,13 +9,17 @@ public static class ConsoleHelper
 
         while (string.IsNullOrWhiteSpace(userInput) || !validOptions.Contains(userInput, StringComparer.CurrentCultureIgnoreCase))
         {
-            if (string.IsNullOrEmpty(userInput) || errorMessage is null)
-                Console.WriteLine($"'{userInput ?? string.Empty}' is not a valid value, please choose from {string.Join(", ", validOptions)}");
-            else
-                Console.WriteLine($"{errorMessage}");
-            
+            Print(errorMessage ?? $"'{userInput ?? string.Empty}' is not a valid value, please choose from {string.Join(", ", validOptions)}");
             userInput = Console.ReadLine();
         }
         return userInput;
     }
+
+    public static void Print(string message, ConsoleColor color = ConsoleColor.Gray)
+    {
+        Console.ForegroundColor = color;
+        Console.WriteLine($"\n{message}");
+        Console.ResetColor();
+    }
 }
+
