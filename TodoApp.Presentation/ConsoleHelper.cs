@@ -7,7 +7,7 @@ public static class ConsoleHelper
         Console.WriteLine(prompt);
         var userInput = Console.ReadLine();
 
-        while (!validOptions.Contains(userInput, StringComparer.CurrentCultureIgnoreCase))
+        while (string.IsNullOrWhiteSpace(userInput) || !validOptions.Contains(userInput, StringComparer.CurrentCultureIgnoreCase))
         {
             if (string.IsNullOrEmpty(userInput) || errorMessage is null)
                 Console.WriteLine($"'{userInput ?? string.Empty}' is not a valid value, please choose from {string.Join(", ", validOptions)}");
