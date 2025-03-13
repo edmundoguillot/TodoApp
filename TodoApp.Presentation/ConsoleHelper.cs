@@ -9,11 +9,8 @@ public static class ConsoleHelper
 
         while (!validOptions.Contains(userInput, StringComparer.CurrentCultureIgnoreCase))
         {
-            // the first condition is to handle the case where the user just press enter
-            if (string.IsNullOrEmpty(userInput))
-                Console.WriteLine($"Please enter a value. Choose from: {string.Join(", ", validOptions)}");
-            else if (errorMessage == null)
-                Console.WriteLine($"'{userInput}' is not a valid value, please choose from {string.Join(", ", validOptions)}");
+            if (string.IsNullOrEmpty(userInput) || errorMessage is null)
+                Console.WriteLine($"'{userInput ?? string.Empty}' is not a valid value, please choose from {string.Join(", ", validOptions)}");
             else
                 Console.WriteLine($"{errorMessage}");
             
