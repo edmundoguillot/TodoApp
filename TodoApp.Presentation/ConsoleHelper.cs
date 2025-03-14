@@ -12,13 +12,16 @@ public static class ConsoleHelper
             Print(errorMessage ?? $"'{userInput ?? string.Empty}' is not a valid value, please choose from {string.Join(", ", validOptions)}");
             userInput = Console.ReadLine();
         }
+        
         return userInput;
     }
 
-    public static void Print(string message, ConsoleColor color = ConsoleColor.Gray)
+    public static void Print(string message, ConsoleColor color = ConsoleColor.Gray, bool newLine = true)
     {
         Console.ForegroundColor = color;
-        Console.WriteLine($"\n{message}");
+        if (newLine)
+            Console.WriteLine();
+        Console.WriteLine(message);
         Console.ResetColor();
     }
 }
