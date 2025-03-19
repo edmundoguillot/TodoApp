@@ -56,3 +56,39 @@ public static class InputHandling
         return yes || result;
     }
 }
+
+//An ok implementation, a bit long-winded
+// public static bool GetBool2(string prompt)
+// {
+//     Console.WriteLine(prompt);
+//     var userInput = Console.ReadLine();
+//
+//     while (true)
+//     {
+//         switch (userInput?.ToLower())
+//         {
+//             case "y":
+//             case  "true":
+//                 return true;   
+//             case "n":
+//             case  "false":
+//                 return false;   
+//         }
+//         Console.WriteLine("Please enter a y/n or true/false: ");
+//         userInput = Console.ReadLine();
+//     }
+// }
+// //The prettiest one, this uses pattern matching with the 'is' keyword
+// public static bool GetBool3(string prompt)
+// {
+//     Console.WriteLine(prompt);
+//     var userInput = Console.ReadLine();
+//
+//     while (userInput?.ToLower() is not ("y" or "n" or "true" or "false"))
+//     {
+//         Console.WriteLine("Please enter a y/n or true/false: ");
+//         userInput = Console.ReadLine();
+//     }
+//
+//     return userInput!.ToLower() is "y" or "true";
+// }
