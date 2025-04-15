@@ -1,7 +1,9 @@
 ﻿using TodoApp.Presentation;
 
-var wantsNewsletter = InputHandling.GetBool("Would you like to subscribe to the newsletter? (y/n)");
-Console.WriteLine($"Subscription status: {wantsNewsletter}");
+var age = InputHandling.GetInput<int>("Enter your age:");
+var wantsNewsletter = InputHandling.GetInput<bool>("Subscribe to the newsletter? (true/false):");
+
+Console.WriteLine($"Age: {age}, Subscribed: {wantsNewsletter}");
 
 ConsoleMenu menu = new ConsoleMenu();
 menu.AddItem("List all items", () => ConsoleHelper.Print("Listing all items"));

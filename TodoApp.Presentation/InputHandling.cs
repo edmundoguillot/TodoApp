@@ -1,7 +1,27 @@
+using static TodoApp.Presentation.ConsoleHelper;
+
 namespace TodoApp.Presentation;
 
 public static class InputHandling
 {
+    public static T GetInput<T>(string prompt)
+    {
+        var errorMessage = typeof(T).Name == "Int32" ? "a valid integer: " : "true/false: ";
+        while (true)
+        {
+            Console.WriteLine(prompt);
+            var userInput = Console.ReadLine();
+            try
+            {
+                return (T)Convert.ChangeType(userInput, typeof(T))!;
+            }
+            catch (Exception)
+            {
+                Print($"Please enter {errorMessage}", ConsoleColor.Red);
+            }
+        }
+    }
+    
     public static int GetInt(string prompt)
     {
         Console.WriteLine(prompt);
