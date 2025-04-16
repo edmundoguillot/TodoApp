@@ -1,7 +1,36 @@
+using static TodoApp.Presentation.ConsoleHelper;
+
 namespace TodoApp.Presentation;
 
 public static class InputHandling
 {
+    public static T GetInput<T>(string prompt)
+    {
+        T result = default;
+        
+        while (true)
+        {
+            Console.WriteLine(prompt);
+            var userInput = Console.ReadLine();
+            try
+            {
+                return (T)Convert.ChangeType(userInput, typeof(T))!;
+            }
+            catch (Exception)
+            {
+                Print($"Please enter {GetTypeName(result)}", ConsoleColor.Red);
+            }
+        }
+    }
+
+    private static string GetTypeName<T>(T o) =>
+        o switch
+        {
+            int or double or long or float => "number",
+            DateTime => "date",
+            _ => o.GetType().Name
+        };
+    
     public static int GetInt(string prompt)
     {
         Console.WriteLine(prompt);
