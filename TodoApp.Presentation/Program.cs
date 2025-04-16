@@ -2,6 +2,8 @@
 
 var age = InputHandling.GetInput<int>("Enter your age:");
 var wantsNewsletter = InputHandling.GetInput<bool>("Subscribe to the newsletter? (true/false):");
+var date = InputHandling.GetInput<DateTime>("Enter a date:");
+
 
 Console.WriteLine($"Age: {age}, Subscribed: {wantsNewsletter}");
 

@@ -6,7 +6,20 @@ public static class InputHandling
 {
     public static T GetInput<T>(string prompt)
     {
-        var errorMessage = typeof(T).Name == "Int32" ? "a valid integer: " : "true/false: ";
+        var errorMessage = String.Empty;
+        
+        switch (typeof(T))
+        {
+            case Type t when t == typeof(int):
+                errorMessage = "a valid integer";
+                break;
+            case Type t when t == typeof(bool):
+                errorMessage = "true/false";
+                break;
+            case Type t when t == typeof(DateTime):
+                errorMessage = "a valid date";
+                break;
+        }
         while (true)
         {
             Console.WriteLine(prompt);
