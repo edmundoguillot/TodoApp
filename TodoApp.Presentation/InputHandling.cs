@@ -6,20 +6,6 @@ public static class InputHandling
 {
     public static T GetInput<T>(string prompt)
     {
-        var errorMessage = String.Empty;
-        
-        switch (typeof(T))
-        {
-            case Type t when t == typeof(int):
-                errorMessage = "a valid integer";
-                break;
-            case Type t when t == typeof(bool):
-                errorMessage = "true/false";
-                break;
-            case Type t when t == typeof(DateTime):
-                errorMessage = "a valid date";
-                break;
-        }
         while (true)
         {
             Console.WriteLine(prompt);
@@ -30,8 +16,25 @@ public static class InputHandling
             }
             catch (Exception)
             {
-                Print($"Please enter {errorMessage}", ConsoleColor.Red);
+                var errorString = TypeNameConverter(typeof(T));
+                Print($"Please enter {errorString}", ConsoleColor.Red);
             }
+        }
+    }
+
+    private static string TypeNameConverter(Type t)
+    {
+        switch (t.Name)
+        {
+            case "Int32":
+            case "Decimal":
+            case "Int64":
+            case "Double":
+                return "number";
+            case "DateTime":
+                return "date";
+            default:
+                return t.Name;
         }
     }
     
