@@ -18,12 +18,12 @@ public static class InputHandling
 
                 if (validateFunc is null)
                     return result;
-                var validateFuncMessage = validateFunc(result);
+                var validationErrorMessage = validateFunc(result);
                 
-                if (validateFuncMessage is null)
+                if (validationErrorMessage is null)
                     return result;
 
-                Print(validateFuncMessage, ConsoleColor.Red);
+                Print(validationErrorMessage, ConsoleColor.Red);
 
             }
             catch (Exception)
