@@ -4,13 +4,44 @@ namespace TodoApp.Presentation;
 
 public static class InputHandling
 {
+    public static T GetInput<T>(string prompt, Func<T, string?>? validateFunc = null)
+    {
+        T result = default;
+        
+        while (true)
+        {
+            Print(prompt);
+            var userInput = Console.ReadLine();
+            try
+            {
+                var value = (T)Convert.ChangeType(userInput, typeof(T))!;
+                
+                if (validateFunc != null)
+                {
+                    var validateFuncMessage = validateFunc(value);
+                    if (validateFuncMessage is null)
+                        return value;
+                    
+                    Print(validateFuncMessage, ConsoleColor.Red);
+                    continue;
+                }
+
+                return value;
+            }
+            catch (Exception)
+            {
+                Print($"Please enter {GetTypeName(result)}", ConsoleColor.Red);
+            }
+        }
+    }
+    
     public static T GetInput<T>(string prompt)
     {
         T result = default;
         
         while (true)
         {
-            Console.WriteLine(prompt);
+            Print(prompt);
             var userInput = Console.ReadLine();
             try
             {

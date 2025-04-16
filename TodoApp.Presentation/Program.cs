@@ -1,11 +1,11 @@
 ﻿using TodoApp.Presentation;
 
-var age = InputHandling.GetInput<int>("Enter your age:");
-var wantsNewsletter = InputHandling.GetInput<bool>("Subscribe to the newsletter? (true/false):");
-var date = InputHandling.GetInput<DateTime>("Enter a date:");
+string? ValidateAge(int age) =>
+    age is >= 18 and <= 120 ? null : "Age must be between 18 and 120.";
 
+int age = InputHandling.GetInput<int>("Enter your age:", ValidateAge);
+Console.WriteLine($"Your age: {age}");
 
-Console.WriteLine($"Age: {age}, Subscribed: {wantsNewsletter}");
 
 ConsoleMenu menu = new ConsoleMenu();
 menu.AddItem("List all items", () => ConsoleHelper.Print("Listing all items"));
