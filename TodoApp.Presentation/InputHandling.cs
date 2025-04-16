@@ -6,6 +6,8 @@ public static class InputHandling
 {
     public static T GetInput<T>(string prompt)
     {
+        T result = default;
+        
         while (true)
         {
             Console.WriteLine(prompt);
@@ -16,27 +18,18 @@ public static class InputHandling
             }
             catch (Exception)
             {
-                var errorString = TypeNameConverter(typeof(T));
-                Print($"Please enter {errorString}", ConsoleColor.Red);
+                Print($"Please enter {GetTypeName(result)}", ConsoleColor.Red);
             }
         }
     }
 
-    private static string TypeNameConverter(Type t)
-    {
-        switch (t.Name)
+    private static string GetTypeName<T>(T o) =>
+        o switch
         {
-            case "Int32":
-            case "Decimal":
-            case "Int64":
-            case "Double":
-                return "number";
-            case "DateTime":
-                return "date";
-            default:
-                return t.Name;
-        }
-    }
+            int or double or long or float => "number",
+            DateTime => "date",
+            _ => o.GetType().Name
+        };
     
     public static int GetInt(string prompt)
     {
