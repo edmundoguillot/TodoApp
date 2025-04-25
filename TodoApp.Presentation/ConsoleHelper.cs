@@ -4,16 +4,13 @@ public static class ConsoleHelper
 {
     public static string GetSelection(string prompt, List<string> validOptions, string? errorMessage = null)
     {
-        Console.WriteLine(prompt);
-        var userInput = Console.ReadLine();
-
-        while (string.IsNullOrWhiteSpace(userInput) || !validOptions.Contains(userInput, StringComparer.CurrentCultureIgnoreCase))
-        {
-            Print(errorMessage ?? $"'{userInput ?? string.Empty}' is not a valid value, please choose from {string.Join(", ", validOptions)}");
-            userInput = Console.ReadLine();
-        }
+        var optionValues = validOptions.Select(x => $"'{x}'").ToArray();
+        return InputHandling.GetInput<string>(prompt, Validate)!;
         
-        return userInput;
+        string? Validate(string? value) =>
+            validOptions.Contains(value ?? string.Empty, StringComparer.OrdinalIgnoreCase)
+                ? null
+                : $"'{value ?? string.Empty}' is not a valid option. Please choose from {string.Join(" or ", optionValues)}";
     }
 
     public static void Print(string message, ConsoleColor color = ConsoleColor.Gray, bool newLine = true)
