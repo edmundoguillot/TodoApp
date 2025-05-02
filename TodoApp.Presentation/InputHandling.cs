@@ -4,7 +4,7 @@ namespace TodoApp.Presentation;
 
 public static class InputHandling
 {
-    public static T GetInput<T>(string prompt, Func<T, string?>? validateFunc = null)
+    public static T? GetInput<T>(string prompt, Func<T, string?>? validateFunc = null)
     {
         T result = default;
         
@@ -12,9 +12,17 @@ public static class InputHandling
         {
             Print(prompt);
             var userInput = Console.ReadLine();
+            var type = Nullable.GetUnderlyingType(typeof(T));
+            var targetType = type ?? typeof(T);
+
             try
             {
-                result = (T)Convert.ChangeType(userInput, typeof(T))!;
+                if (string.IsNullOrEmpty(userInput) && type != null)
+                {
+                    return result;
+                }
+                
+                result = (T)Convert.ChangeType(userInput, targetType)!;
 
                 if (validateFunc is null)
                     return result;

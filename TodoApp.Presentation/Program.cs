@@ -1,5 +1,13 @@
 ﻿using TodoApp.Presentation;
 
+
+DateTime? completeBy = InputHandling.GetInput<DateTime?>("Enter a completion date (optional):");
+if (completeBy is null)
+    Console.WriteLine("No date selected");
+else
+    Console.WriteLine($"Task must be completed by: {completeBy.Value.ToShortDateString()}");
+
+
 string? ValidateAge(int age) =>
     age is >= 18 and <= 120 ? null : "Age must be between 18 and 120.";
 
