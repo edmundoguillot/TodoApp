@@ -1,3 +1,4 @@
+using System.Globalization;
 using static TodoApp.Presentation.ConsoleHelper;
 
 namespace TodoApp.Presentation;
@@ -12,18 +13,17 @@ public static class InputHandling
         {
             Print(prompt);
             var userInput = Console.ReadLine();
-            var type = Nullable.GetUnderlyingType(typeof(T));
-            var targetType = type ?? typeof(T);
-
+            var underlyingType = Nullable.GetUnderlyingType(typeof(T));
+            var targetType = underlyingType ?? typeof(T);
+            var isOptional = underlyingType is not null;
+            
+            if (string.IsNullOrEmpty(userInput) && isOptional)
+                return result;
+            
             try
             {
-                if (string.IsNullOrEmpty(userInput) && type != null)
-                {
-                    return result;
-                }
+                result = (T)Convert.ChangeType(userInput, targetType, CultureInfo.InvariantCulture)!;
                 
-                result = (T)Convert.ChangeType(userInput, targetType)!;
-
                 if (validateFunc is null)
                     return result;
                 var validationErrorMessage = validateFunc(result);
