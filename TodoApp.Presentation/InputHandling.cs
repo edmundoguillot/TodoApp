@@ -1,10 +1,11 @@
+using System.Globalization;
 using static TodoApp.Presentation.ConsoleHelper;
 
 namespace TodoApp.Presentation;
 
 public static class InputHandling
 {
-    public static T GetInput<T>(string prompt, Func<T, string?>? validateFunc = null)
+    public static T? GetInput<T>(string prompt, Func<T, string?>? validateFunc = null)
     {
         T result = default;
         
@@ -12,10 +13,17 @@ public static class InputHandling
         {
             Print(prompt);
             var userInput = Console.ReadLine();
+            var underlyingType = Nullable.GetUnderlyingType(typeof(T));
+            var targetType = underlyingType ?? typeof(T);
+            var isOptional = underlyingType is not null;
+            
+            if (string.IsNullOrEmpty(userInput) && isOptional)
+                return result;
+            
             try
             {
-                result = (T)Convert.ChangeType(userInput, typeof(T))!;
-
+                result = (T)Convert.ChangeType(userInput, targetType, CultureInfo.InvariantCulture)!;
+                
                 if (validateFunc is null)
                     return result;
                 var validationErrorMessage = validateFunc(result);

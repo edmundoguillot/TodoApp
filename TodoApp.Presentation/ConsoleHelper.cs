@@ -5,7 +5,7 @@ public static class ConsoleHelper
     public static string GetSelection(string prompt, List<string> validOptions, string? errorMessage = null)
     {
         var optionValues = validOptions.Select(x => $"'{x}'").ToArray();
-        return InputHandling.GetInput<string>(prompt, Validate)!;
+        return InputHandling.GetInput<string?>(prompt, Validate)!;
         
         string? Validate(string? value) =>
             validOptions.Contains(value ?? string.Empty, StringComparer.OrdinalIgnoreCase)
