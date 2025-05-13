@@ -1,12 +1,9 @@
 ﻿using TodoApp.Application.CreateTodoItem;
 using TodoApp.Presentation;
 
-int age = InputHandling.GetInput<int>("Enter your age:");
-
 string title = InputHandling.GetInput<string>("Enter the task title:");
 string? description = InputHandling.GetInput<string?>("Enter the task description (optional):");
 DateTime? completeBy = InputHandling.GetInput<DateTime?>("Enter a completion date (optional):");
-
 
 var command = new CreateTodoItemCommand(title, description, completeBy);
 var handler = new CreateTodoItemCommandHandler();
