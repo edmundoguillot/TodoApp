@@ -16,7 +16,14 @@ public static class InputHandling
             var underlyingType = Nullable.GetUnderlyingType(typeof(T));
             var targetType = underlyingType ?? typeof(T);
             var isOptional = underlyingType is not null;
+
             
+            if (typeof(T) == typeof(string) && string.IsNullOrWhiteSpace(userInput) && !isOptional)
+            {
+                Print("Please enter a string.", ConsoleColor.Red);
+                continue;
+            }
+
             if (string.IsNullOrEmpty(userInput) && isOptional)
                 return result;
             
@@ -36,7 +43,7 @@ public static class InputHandling
             }
             catch (Exception)
             {
-                Print($"Please enter {GetTypeName(result)}", ConsoleColor.Red);
+                Print($"Please enter a {GetTypeName(result)}", ConsoleColor.Red);
             }
         }
     }
