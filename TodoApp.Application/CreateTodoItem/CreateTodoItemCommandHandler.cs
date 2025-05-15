@@ -16,11 +16,6 @@ public class CreateTodoItemCommandHandler
         {
             throw new ValidationException("Description is required");
         }
-
-        if (string.IsNullOrEmpty(command.Description))
-        {
-            throw new ValidationException("Description is required");
-        }
         
         var todoItem = new TodoItem(
             Guid.NewGuid(),
