@@ -17,13 +17,6 @@ public static class InputHandling
             var targetType = underlyingType ?? typeof(T);
             var isOptional = underlyingType is not null;
 
-            
-            if (typeof(T) == typeof(string) && string.IsNullOrWhiteSpace(userInput) && !isOptional)
-            {
-                Print("Please enter a string.", ConsoleColor.Red);
-                continue;
-            }
-
             if (string.IsNullOrEmpty(userInput) && isOptional)
                 return result;
             

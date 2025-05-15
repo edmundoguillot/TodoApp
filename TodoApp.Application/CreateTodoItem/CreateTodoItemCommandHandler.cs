@@ -11,7 +11,17 @@ public class CreateTodoItemCommandHandler
         {
             throw new ValidationException("Title is required");
         }
-            
+
+        if (command.Description is not null && string.IsNullOrWhiteSpace(command.Description))
+        {
+            throw new ValidationException("Description is required");
+        }
+
+        if (string.IsNullOrEmpty(command.Description))
+        {
+            throw new ValidationException("Description is required");
+        }
+        
         var todoItem = new TodoItem(
             Guid.NewGuid(),
             command.Title,
