@@ -23,7 +23,6 @@ static void CreateTodoItem()
     catch (Exception e)
     {
         ConsoleHelper.Print(e.ToString(), ConsoleColor.Red);
-        throw;
     }
 }
 
