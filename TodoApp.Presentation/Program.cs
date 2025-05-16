@@ -1,23 +1,31 @@
 ﻿using TodoApp.Application.CreateTodoItem;
 using TodoApp.Presentation;
 
-string title = InputHandling.GetInput<string>("Enter the task title:");
-string? description = InputHandling.GetInput<string?>("Enter the task description (optional):");
-DateTime? completeBy = InputHandling.GetInput<DateTime?>("Enter a completion date (optional):");
+var menu = new ConsoleMenu();
+menu.AddItem("Create todo item", CreateTodoItem);
+menu.Show();
+return;
 
-var command = new CreateTodoItemCommand(title, description, completeBy);
-var handler = new CreateTodoItemCommandHandler();
+static void CreateTodoItem()
+{
+    string title = InputHandling.GetInput<string>("Enter the task title:");
+    string? description = InputHandling.GetInput<string?>("Enter the task description (optional):");
+    DateTime? completeBy = InputHandling.GetInput<DateTime?>("Enter a completion date (optional):");
 
-try
-{
-    var id = handler.Handle(command);
-    ConsoleHelper.Print($"Todo item Id: {id.ToString()}", ConsoleColor.Blue);
+    var command = new CreateTodoItemCommand(title, description, completeBy);
+    var handler = new CreateTodoItemCommandHandler();
+
+    try
+    {
+        var id = handler.Handle(command);
+        ConsoleHelper.Print($"Todo item Id: {id.ToString()}", ConsoleColor.Blue);
+    }
+    catch (Exception e)
+    {
+        ConsoleHelper.Print(e.ToString(), ConsoleColor.Red);
+    }
 }
-catch (Exception e)
-{
-    ConsoleHelper.Print(e.ToString(), ConsoleColor.Red);
-    throw;
-}
+
 
 // if (completeBy is null)
 //     Console.WriteLine("No date selected");
