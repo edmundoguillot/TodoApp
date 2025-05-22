@@ -1,19 +1,30 @@
-﻿using TodoApp.Application.CreateTodoItem;
+﻿using ConsoleTables;
+using TodoApp.Application.CreateTodoItem;
+using TodoApp.Application.DeleteTodoItem;
+using TodoApp.Application.GetAllTodoItems;
+using TodoApp.Application.GetByIdTodoItem;
+using TodoApp.Application.Models;
+using TodoApp.Application.Persistence;
 using TodoApp.Presentation;
 
+var repository = new InMemoryTodoRepository();
 var menu = new ConsoleMenu();
 menu.AddItem("Create todo item", CreateTodoItem);
+menu.AddItem("List item", ListItems);
+menu.AddItem("Search item", SearchItem);
+menu.AddItem("Delete item", DeleteItem);
+
 menu.Show();
 return;
 
-static void CreateTodoItem()
+void CreateTodoItem()
 {
-    string title = InputHandling.GetInput<string>("Enter the task title:");
+    var title = InputHandling.GetInput<string>("Enter the task title:");
     string? description = InputHandling.GetInput<string?>("Enter the task description (optional):");
     DateTime? completeBy = InputHandling.GetInput<DateTime?>("Enter a completion date (optional):");
 
-    var command = new CreateTodoItemCommand(title, description, completeBy);
-    var handler = new CreateTodoItemCommandHandler();
+    var command = new CreateTodoItemCommand(title!, description, completeBy);
+    var handler = new CreateTodoItemCommandHandler(repository);
 
     try
     {
@@ -24,6 +35,42 @@ static void CreateTodoItem()
     {
         ConsoleHelper.Print(e.ToString(), ConsoleColor.Red);
     }
+}
+
+void ListItems()
+{
+    var handler = new GetAllTodoItemsQueryHandler(repository);
+    var items = handler.Handle();
+    if (items.Any())
+        ConsoleTable.From(items).Write();
+    else
+        ConsoleHelper.Print("There are no items, try adding one", ConsoleColor.Red);
+}
+
+void SearchItem()
+{
+    Guid id = InputHandling.GetInput<Guid>("Enter the id of the item to find:");
+    var handler = new GetByIdTodoItemQueryHandler(repository);
+    var item = handler.Handle(id);
+    if (item is null)
+    {
+        ConsoleHelper.Print("Item not found!", ConsoleColor.Red);
+        return;
+    }
+    ConsoleTable.From([item]).Write();
+}
+
+void DeleteItem()
+{
+    Guid id = InputHandling.GetInput<Guid>("Enter the id of the item to delete:");
+
+    var handler = new DeleteTodoItemCommandHandler(repository);
+    var result = handler.Handle(id);
+    
+    if (result)
+        ConsoleHelper.Print("Item deleted", ConsoleColor.Green);
+    else
+        ConsoleHelper.Print("Item not found", ConsoleColor.Red);
 }
 
 
