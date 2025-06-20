@@ -8,4 +8,5 @@ public interface ITodoRepository
     TodoItem? GetById(Guid id);
     List<TodoItem> GetAll();
     bool Delete(Guid id);
+    void LoadTodos();
 }
