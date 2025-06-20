@@ -16,8 +16,5 @@ public class InMemoryTodoRepository: ITodoRepository
 
     public List<TodoItem> GetAll() => _items.Values.ToList();
 
-    public bool Delete(Guid id)
-    { 
-        return _items.Remove(id);
-    }
+    public bool Delete(Guid id) => _items.Remove(id);
 }

@@ -5,8 +5,5 @@ namespace TodoApp.Application.GetByIdTodoItem;
 
 public class GetByIdTodoItemQueryHandler(ITodoRepository repository)
 {
-    public TodoItem? Handle(Guid id)
-    {
-        return repository.GetById(id);
-    }
+    public TodoItem? Handle(Guid id) => repository.GetById(id);
 }

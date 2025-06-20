@@ -49,9 +49,16 @@ void ListItems()
 
 void SearchItem()
 {
-    Guid id = InputHandling.GetInput<Guid>("Enter the id of the item to find:");
+    var id = InputHandling.GetInput<string>("Enter the id of the item to find:");
+    
+    if(!Guid.TryParse(id, out Guid guidValue))
+    {
+        ConsoleHelper.Print("Invalid id provided", ConsoleColor.Red);
+        return;
+    }
+    
     var handler = new GetByIdTodoItemQueryHandler(repository);
-    var item = handler.Handle(id);
+    var item = handler.Handle(guidValue);
     if (item is null)
     {
         ConsoleHelper.Print("Item not found!", ConsoleColor.Red);
@@ -62,17 +69,22 @@ void SearchItem()
 
 void DeleteItem()
 {
-    Guid id = InputHandling.GetInput<Guid>("Enter the id of the item to delete:");
+    var id = InputHandling.GetInput<string>("Enter the id of the item to delete:");
 
+    if(!Guid.TryParse(id, out Guid guidValue))
+    {
+        ConsoleHelper.Print("Invalid id provided", ConsoleColor.Red);
+        return;
+    }
+    
     var handler = new DeleteTodoItemCommandHandler(repository);
-    var result = handler.Handle(id);
+    var result = handler.Handle(guidValue);
     
     if (result)
         ConsoleHelper.Print("Item deleted", ConsoleColor.Green);
     else
         ConsoleHelper.Print("Item not found", ConsoleColor.Red);
 }
-
 
 // if (completeBy is null)
 //     Console.WriteLine("No date selected");

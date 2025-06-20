@@ -22,19 +22,7 @@ public static class InputHandling
             
             try
             {
-                object convertedValue;
-
-                if (targetType == typeof(Guid))
-                {
-                    if (!Guid.TryParse(userInput, out var guidValue))
-                        throw new FormatException();
-                    convertedValue = guidValue;
-                }
-                else
-                {
-                    convertedValue = Convert.ChangeType(userInput, targetType, CultureInfo.InvariantCulture)!;
-                }
-                result = (T)convertedValue;
+                result = (T)Convert.ChangeType(userInput, targetType, CultureInfo.InvariantCulture)!;
                 
                 if (validateFunc is null)
                     return result;
