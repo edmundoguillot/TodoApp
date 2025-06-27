@@ -3,11 +3,11 @@ using TodoApp.Application.CreateTodoItem;
 using TodoApp.Application.DeleteTodoItem;
 using TodoApp.Application.GetAllTodoItems;
 using TodoApp.Application.GetByIdTodoItem;
-using TodoApp.Application.Models;
 using TodoApp.Application.Persistence;
 using TodoApp.Presentation;
 
-var repository = new InMemoryTodoRepository();
+var repository = new OnDiskTodoRepository();
+
 var menu = new ConsoleMenu();
 menu.AddItem("Create todo item", CreateTodoItem);
 menu.AddItem("List item", ListItems);
