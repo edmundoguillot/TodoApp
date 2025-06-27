@@ -7,7 +7,6 @@ using TodoApp.Application.Persistence;
 using TodoApp.Presentation;
 
 var repository = new OnDiskTodoRepository();
-repository.LoadTodos();
 
 var menu = new ConsoleMenu();
 menu.AddItem("Create todo item", CreateTodoItem);

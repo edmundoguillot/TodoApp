@@ -6,6 +6,13 @@ namespace TodoApp.Application.Persistence;
 public class OnDiskTodoRepository : ITodoRepository
 {
     private readonly Dictionary<Guid, TodoItem> _items = [];
+    private readonly JsonSerializerOptions _options = new() { WriteIndented = true };
+    private readonly string _path = GetFilePath();
+
+    public OnDiskTodoRepository()
+    {
+        LoadTodos();
+    }
     
     public void Save(TodoItem item)
     {
@@ -27,13 +34,11 @@ public class OnDiskTodoRepository : ITodoRepository
         return removed;
     }
     
-    public void LoadTodos()
+    private void LoadTodos()
     {
-        var path = GetFilePath();
-
-        if (!File.Exists(path)) return;
+        if (!File.Exists(_path)) return;
         
-        var json = File.ReadAllText(path);
+        var json = File.ReadAllText(_path);
         var items = JsonSerializer.Deserialize<List<TodoItem>>(json);
         if (items is null) return;
         
@@ -45,15 +50,14 @@ public class OnDiskTodoRepository : ITodoRepository
 
     private void SaveTodos()
     {
-        var path = GetFilePath();
-        var directory = Path.GetDirectoryName(path);
+        var directory = Path.GetDirectoryName(_path);
         if (!Directory.Exists(directory))
         {
             Directory.CreateDirectory(directory!);
         }
 
-        var json = JsonSerializer.Serialize(_items.Values.ToList(), new JsonSerializerOptions { WriteIndented = true });
-        File.WriteAllText(path, json);
+        var json = JsonSerializer.Serialize(_items.Values.ToList(), _options);
+        File.WriteAllText(_path, json);
     }
     
     private static string GetFilePath()
@@ -61,7 +65,6 @@ public class OnDiskTodoRepository : ITodoRepository
             var baseDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             var dataDirectory = Path.Combine(baseDirectory, "TodoApp");
             var fileName = "todos.json";
-            Console.WriteLine(dataDirectory);
             return Path.Combine(dataDirectory, fileName);
         }
 }
